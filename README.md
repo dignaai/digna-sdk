@@ -1,6 +1,6 @@
 # digna-sdk-python
 
-Official Python SDK for Digna — the AI-driven Data Quality & Observability Platform.
+Official Python SDK for digna — the AI-driven Data Quality & Observability Platform.
 
 The SDK is currently under development and will be released soon.
 
