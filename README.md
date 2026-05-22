@@ -14,7 +14,7 @@ The SDK is currently under development and will be released soon.
 - Typed Python client
 - Async support
 
-Learn more about Digna:
+Learn more about digna:
 
 - https://www.digna.ai
 - https://docs.digna.ai
