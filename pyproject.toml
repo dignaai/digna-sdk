@@ -1,6 +1,6 @@
 [project]
 name = "digna-sdk"
-version = "0.1.0"
+version = "0.0.1"
 description = "Official Python SDK for digna"
 readme = "README.md"
 authors = [
@@ -16,7 +16,6 @@ classifiers = [
 
 [project.urls]
 "Homepage" = "https://www.digna.ai"
-"Documentation" = "https://docs.digna.ai"
 "Repository" = "https://github.com/dignaai/digna-sdk"
 
 [build-system]
