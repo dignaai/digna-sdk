@@ -1,0 +1,24 @@
+[project]
+name = "digna-sdk"
+version = "0.1.0"
+description = "Official Python SDK for digna"
+readme = "README.md"
+authors = [
+    { name = "Danijel Kivaranovic", email = "danijel.kivaranovic@digna.ai" }
+]
+requires-python = ">=3.11"
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://www.digna.ai"
+"Documentation" = "https://docs.digna.ai"
+"Repository" = "https://github.com/dignaai/digna-sdk"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
