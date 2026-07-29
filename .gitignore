@@ -1,4 +1,27 @@
+dist
+__pycache__/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# JetBrains
+.idea/
 .idea
 .junie
-.venv
-dist
+
+
+/coverage.xml
+/.coverage

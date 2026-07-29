@@ -1,0 +1,218 @@
+from http import HTTPStatus
+from typing import Any, cast
+from urllib.parse import quote
+
+import httpx
+
+from ...client import AuthenticatedClient, Client
+from ...types import Response, UNSET
+from ... import errors
+
+from ...models.api_error import ApiError
+from ...models.data_set import DataSet
+from ...models.update_data_set_request import UpdateDataSetRequest
+from typing import cast
+
+
+
+def _get_kwargs(
+    dataset_id: int,
+    *,
+    body: UpdateDataSetRequest,
+
+) -> dict[str, Any]:
+    headers: dict[str, Any] = {}
+
+
+    
+
+    
+
+    _kwargs: dict[str, Any] = {
+        "method": "put",
+        "url": "/v1/data-sets/{dataset_id}".format(dataset_id=quote(str(dataset_id), safe=""),),
+    }
+
+    _kwargs["json"] = body.to_dict()
+
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+    return _kwargs
+
+
+
+def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> ApiError | DataSet | None:
+    if response.status_code == 200:
+        response_200 = DataSet.from_dict(response.json())
+
+
+
+        return response_200
+
+    if response.status_code == 404:
+        response_404 = ApiError.from_dict(response.json())
+
+
+
+        return response_404
+
+    if response.status_code == 500:
+        response_500 = ApiError.from_dict(response.json())
+
+
+
+        return response_500
+
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
+    else:
+        return None
+
+
+def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[ApiError | DataSet]:
+    return Response(
+        status_code=HTTPStatus(response.status_code),
+        content=response.content,
+        headers=response.headers,
+        parsed=_parse_response(client=client, response=response),
+    )
+
+
+def sync_detailed(
+    dataset_id: int,
+    *,
+    client: AuthenticatedClient | Client,
+    body: UpdateDataSetRequest,
+
+) -> Response[ApiError | DataSet]:
+    """update_data_set
+    
+    Tag: data_set
+    Operation: PUT /v1/data-sets/{dataset_id}
+    
+    Parameters:
+        - dataset_id (path, required=True): Data set ID
+    
+    Responses:
+        - 200: Update a data set
+        - 404: Data set not found
+        - 500: Internal error
+    
+    Returns:
+        Raw response wrapper with parsed payload.
+    """
+
+
+    kwargs = _get_kwargs(
+        dataset_id=dataset_id,
+body=body,
+
+    )
+
+    response = client.get_httpx_client().request(
+        **kwargs,
+    )
+
+    return _build_response(client=client, response=response)
+
+def sync(
+    dataset_id: int,
+    *,
+    client: AuthenticatedClient | Client,
+    body: UpdateDataSetRequest,
+
+) -> ApiError | DataSet | None:
+    """update_data_set
+    
+    Tag: data_set
+    Operation: PUT /v1/data-sets/{dataset_id}
+    
+    Parameters:
+        - dataset_id (path, required=True): Data set ID
+    
+    Responses:
+        - 200: Update a data set
+        - 404: Data set not found
+        - 500: Internal error
+    
+    Returns:
+        Parsed response model for successful and handled error responses.
+    """
+
+
+    return sync_detailed(
+        dataset_id=dataset_id,
+client=client,
+body=body,
+
+    ).parsed
+
+async def asyncio_detailed(
+    dataset_id: int,
+    *,
+    client: AuthenticatedClient | Client,
+    body: UpdateDataSetRequest,
+
+) -> Response[ApiError | DataSet]:
+    """update_data_set
+    
+    Tag: data_set
+    Operation: PUT /v1/data-sets/{dataset_id}
+    
+    Parameters:
+        - dataset_id (path, required=True): Data set ID
+    
+    Responses:
+        - 200: Update a data set
+        - 404: Data set not found
+        - 500: Internal error
+    
+    Returns:
+        Async raw response wrapper with parsed payload.
+    """
+
+
+    kwargs = _get_kwargs(
+        dataset_id=dataset_id,
+body=body,
+
+    )
+
+    response = await client.get_async_httpx_client().request(
+        **kwargs
+    )
+
+    return _build_response(client=client, response=response)
+
+async def asyncio(
+    dataset_id: int,
+    *,
+    client: AuthenticatedClient | Client,
+    body: UpdateDataSetRequest,
+
+) -> ApiError | DataSet | None:
+    """update_data_set
+    
+    Tag: data_set
+    Operation: PUT /v1/data-sets/{dataset_id}
+    
+    Parameters:
+        - dataset_id (path, required=True): Data set ID
+    
+    Responses:
+        - 200: Update a data set
+        - 404: Data set not found
+        - 500: Internal error
+    
+    Returns:
+        Async parsed response model for successful and handled error responses.
+    """
+
+
+    return (await asyncio_detailed(
+        dataset_id=dataset_id,
+client=client,
+body=body,
+
+    )).parsed
