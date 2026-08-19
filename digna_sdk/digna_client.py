@@ -50,6 +50,7 @@ from .models.stable_data_set_kind import StableDataSetKind
 from .models.stable_data_source_kind import StableDataSourceKind
 from .models.stable_inspection_request_mode import StableInspectionRequestMode
 from .models.submit_inspection_request import SubmitInspectionRequest
+from .models.submit_inspection_request_response import SubmitInspectionRequestResponse
 from .models.update_attribute_request import UpdateAttributeRequest
 from .models.update_data_set_request import UpdateDataSetRequest
 from .models.update_data_source_request import UpdateDataSourceRequest
@@ -1512,7 +1513,7 @@ class InspectionRequestApi:
         parsed = _expect_success(operation="get_inspection_request", response=response, success_statuses={200}, allow_none=False)
         return Response(status_code=response.status_code, content=response.content, headers=response.headers, parsed=parsed)
 
-    def submit_inspection_request_detailed(self, *, project_id: int, data_source_ids: list[int], include_all_data_sources: bool, mode: StableInspectionRequestMode, start_date: datetime.date, end_date: datetime.date, monthly_mode_days: list[int], weekly_mode_weekdays: list[int], use_notification: bool, inspection_job_id: int | None | Unset = UNSET) -> Response[None]:
+    def submit_inspection_request_detailed(self, *, project_id: int, data_source_ids: list[int], include_all_data_sources: bool, mode: StableInspectionRequestMode, start_date: datetime.date, end_date: datetime.date, monthly_mode_days: list[int], weekly_mode_weekdays: list[int], use_notification: bool, inspection_job_id: int | None | Unset = UNSET) -> Response[SubmitInspectionRequestResponse]:
         """Submit Inspection Request
         
         Flattened convenience method that builds SubmitInspectionRequest internally.
@@ -1530,10 +1531,10 @@ class InspectionRequestApi:
             inspection_job_id=inspection_job_id,
         )
         response = inspection_request_submit_inspection_request.sync_detailed(body=body, client=self._client)
-        parsed = _expect_success(operation="submit_inspection_request", response=response, success_statuses={204}, allow_none=False)
+        parsed = _expect_success(operation="submit_inspection_request", response=response, success_statuses={200}, allow_none=False)
         return Response(status_code=response.status_code, content=response.content, headers=response.headers, parsed=parsed)
 
-    def submit_inspection_request(self, *, project_id: int, data_source_ids: list[int], include_all_data_sources: bool, mode: StableInspectionRequestMode, start_date: datetime.date, end_date: datetime.date, monthly_mode_days: list[int], weekly_mode_weekdays: list[int], use_notification: bool, inspection_job_id: int | None | Unset = UNSET) -> None:
+    def submit_inspection_request(self, *, project_id: int, data_source_ids: list[int], include_all_data_sources: bool, mode: StableInspectionRequestMode, start_date: datetime.date, end_date: datetime.date, monthly_mode_days: list[int], weekly_mode_weekdays: list[int], use_notification: bool, inspection_job_id: int | None | Unset = UNSET) -> SubmitInspectionRequestResponse:
         """Submit Inspection Request
         
         Flattened convenience method that builds SubmitInspectionRequest internally.
@@ -1551,9 +1552,9 @@ class InspectionRequestApi:
             inspection_job_id=inspection_job_id,
         )
         response = inspection_request_submit_inspection_request.sync_detailed(body=body, client=self._client)
-        return _expect_success(operation="submit_inspection_request", response=response, success_statuses={204}, allow_none=False)
+        return _expect_success(operation="submit_inspection_request", response=response, success_statuses={200}, allow_none=False)
 
-    async def submit_inspection_request_async(self, *, project_id: int, data_source_ids: list[int], include_all_data_sources: bool, mode: StableInspectionRequestMode, start_date: datetime.date, end_date: datetime.date, monthly_mode_days: list[int], weekly_mode_weekdays: list[int], use_notification: bool, inspection_job_id: int | None | Unset = UNSET) -> None:
+    async def submit_inspection_request_async(self, *, project_id: int, data_source_ids: list[int], include_all_data_sources: bool, mode: StableInspectionRequestMode, start_date: datetime.date, end_date: datetime.date, monthly_mode_days: list[int], weekly_mode_weekdays: list[int], use_notification: bool, inspection_job_id: int | None | Unset = UNSET) -> SubmitInspectionRequestResponse:
         """Submit Inspection Request
         
         Flattened convenience method that builds SubmitInspectionRequest internally.
@@ -1571,9 +1572,9 @@ class InspectionRequestApi:
             inspection_job_id=inspection_job_id,
         )
         response = await inspection_request_submit_inspection_request.asyncio_detailed(body=body, client=self._client)
-        return _expect_success(operation="submit_inspection_request", response=response, success_statuses={204}, allow_none=False)
+        return _expect_success(operation="submit_inspection_request", response=response, success_statuses={200}, allow_none=False)
 
-    async def submit_inspection_request_async_detailed(self, *, project_id: int, data_source_ids: list[int], include_all_data_sources: bool, mode: StableInspectionRequestMode, start_date: datetime.date, end_date: datetime.date, monthly_mode_days: list[int], weekly_mode_weekdays: list[int], use_notification: bool, inspection_job_id: int | None | Unset = UNSET) -> Response[None]:
+    async def submit_inspection_request_async_detailed(self, *, project_id: int, data_source_ids: list[int], include_all_data_sources: bool, mode: StableInspectionRequestMode, start_date: datetime.date, end_date: datetime.date, monthly_mode_days: list[int], weekly_mode_weekdays: list[int], use_notification: bool, inspection_job_id: int | None | Unset = UNSET) -> Response[SubmitInspectionRequestResponse]:
         """Submit Inspection Request
         
         Flattened convenience method that builds SubmitInspectionRequest internally.
@@ -1591,7 +1592,7 @@ class InspectionRequestApi:
             inspection_job_id=inspection_job_id,
         )
         response = await inspection_request_submit_inspection_request.asyncio_detailed(body=body, client=self._client)
-        parsed = _expect_success(operation="submit_inspection_request", response=response, success_statuses={204}, allow_none=False)
+        parsed = _expect_success(operation="submit_inspection_request", response=response, success_statuses={200}, allow_none=False)
         return Response(status_code=response.status_code, content=response.content, headers=response.headers, parsed=parsed)
 
 

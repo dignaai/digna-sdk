@@ -1,5 +1,5 @@
-import datetime
 import argparse
+import datetime
 
 from digna_sdk.examples.common import get_client
 from digna_sdk.models.stable_inspection_request_mode import StableInspectionRequestMode
@@ -77,7 +77,7 @@ def main() -> None:
     api = get_client()
     mode = StableInspectionRequestMode(args.mode.upper())
 
-    api.inspection_request.submit_inspection_request(
+    resp = api.inspection_request.submit_inspection_request(
         project_id=args.project_id,
         data_source_ids=args.data_source_ids,
         include_all_data_sources=args.include_all_data_sources,
@@ -88,8 +88,7 @@ def main() -> None:
         weekly_mode_weekdays=args.weekdays,
         use_notification=args.use_notification,
     )
-
-    print("Inspection request submitted successfully")
+    print(f"Inspection request submitted successfully, ID: {resp.id}")
 
 
 if __name__ == "__main__":

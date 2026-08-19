@@ -60,7 +60,9 @@ from .stable_db_connection_profiling_mode import StableDbConnectionProfilingMode
 from .stable_db_connection_technology import StableDbConnectionTechnology
 from .stable_inspection_operation_status import StableInspectionOperationStatus
 from .stable_inspection_request_mode import StableInspectionRequestMode
+from .stable_inspection_request_weekday import StableInspectionRequestWeekday
 from .submit_inspection_request import SubmitInspectionRequest
+from .submit_inspection_request_response import SubmitInspectionRequestResponse
 from .test_status import TestStatus
 from .update_attribute_request import UpdateAttributeRequest
 from .update_data_set_request import UpdateDataSetRequest
@@ -128,7 +130,9 @@ __all__ = (
     "StableDbConnectionTechnology",
     "StableInspectionOperationStatus",
     "StableInspectionRequestMode",
+    "StableInspectionRequestWeekday",
     "SubmitInspectionRequest",
+    "SubmitInspectionRequestResponse",
     "TestStatus",
     "UpdateAttributeRequest",
     "UpdateDataSetRequest",

@@ -9,6 +9,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 from ..models.stable_inspection_request_mode import StableInspectionRequestMode
+from ..models.stable_inspection_request_weekday import StableInspectionRequestWeekday
 from ..types import UNSET, Unset
 from typing import cast
 import datetime
@@ -36,7 +37,7 @@ class SubmitInspectionRequest:
         project_id (int, required=True): No description
         start_date (str, required=True): No description
         use_notification (bool, required=True): No description
-        weekly_mode_weekdays (list[int], required=True): No description
+        weekly_mode_weekdays (list[StableInspectionRequestWeekday], required=True): No description
     """
 
     data_source_ids: list[int]
@@ -47,7 +48,7 @@ class SubmitInspectionRequest:
     project_id: int
     start_date: datetime.date
     use_notification: bool
-    weekly_mode_weekdays: list[int]
+    weekly_mode_weekdays: list[StableInspectionRequestWeekday]
     inspection_job_id: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -76,7 +77,10 @@ class SubmitInspectionRequest:
 
         use_notification = self.use_notification
 
-        weekly_mode_weekdays = self.weekly_mode_weekdays
+        weekly_mode_weekdays = []
+        for weekly_mode_weekdays_item_data in self.weekly_mode_weekdays:
+            weekly_mode_weekdays_item = weekly_mode_weekdays_item_data.value
+            weekly_mode_weekdays.append(weekly_mode_weekdays_item)
 
 
 
@@ -137,7 +141,14 @@ class SubmitInspectionRequest:
 
         use_notification = d.pop("use_notification")
 
-        weekly_mode_weekdays = cast(list[int], d.pop("weekly_mode_weekdays"))
+        weekly_mode_weekdays = []
+        _weekly_mode_weekdays = d.pop("weekly_mode_weekdays")
+        for weekly_mode_weekdays_item_data in (_weekly_mode_weekdays):
+            weekly_mode_weekdays_item = StableInspectionRequestWeekday(weekly_mode_weekdays_item_data)
+
+
+
+            weekly_mode_weekdays.append(weekly_mode_weekdays_item)
 
 
         def _parse_inspection_job_id(data: object) -> int | None | Unset:

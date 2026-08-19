@@ -10,6 +10,7 @@ from ... import errors
 
 from ...models.api_error import ApiError
 from ...models.submit_inspection_request import SubmitInspectionRequest
+from ...models.submit_inspection_request_response import SubmitInspectionRequestResponse
 from typing import cast
 
 
@@ -40,10 +41,13 @@ def _get_kwargs(
 
 
 
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | ApiError | None:
-    if response.status_code == 204:
-        response_204 = cast(Any, None)
-        return response_204
+def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> ApiError | SubmitInspectionRequestResponse | None:
+    if response.status_code == 200:
+        response_200 = SubmitInspectionRequestResponse.from_dict(response.json())
+
+
+
+        return response_200
 
     if response.status_code == 400:
         response_400 = ApiError.from_dict(response.json())
@@ -65,7 +69,7 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Any | ApiError]:
+def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[ApiError | SubmitInspectionRequestResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -79,14 +83,14 @@ def sync_detailed(
     client: AuthenticatedClient | Client,
     body: SubmitInspectionRequest,
 
-) -> Response[Any | ApiError]:
+) -> Response[ApiError | SubmitInspectionRequestResponse]:
     """submit_inspection_request
     
     Tag: inspection_request
     Operation: POST /v1/inspection-requests
     
     Responses:
-        - 204: Submit an inspection request
+        - 200: Submit an inspection request
         - 400: Error
         - 500: Internal error
     
@@ -111,14 +115,14 @@ def sync(
     client: AuthenticatedClient | Client,
     body: SubmitInspectionRequest,
 
-) -> Any | ApiError | None:
+) -> ApiError | SubmitInspectionRequestResponse | None:
     """submit_inspection_request
     
     Tag: inspection_request
     Operation: POST /v1/inspection-requests
     
     Responses:
-        - 204: Submit an inspection request
+        - 200: Submit an inspection request
         - 400: Error
         - 500: Internal error
     
@@ -138,14 +142,14 @@ async def asyncio_detailed(
     client: AuthenticatedClient | Client,
     body: SubmitInspectionRequest,
 
-) -> Response[Any | ApiError]:
+) -> Response[ApiError | SubmitInspectionRequestResponse]:
     """submit_inspection_request
     
     Tag: inspection_request
     Operation: POST /v1/inspection-requests
     
     Responses:
-        - 204: Submit an inspection request
+        - 200: Submit an inspection request
         - 400: Error
         - 500: Internal error
     
@@ -170,14 +174,14 @@ async def asyncio(
     client: AuthenticatedClient | Client,
     body: SubmitInspectionRequest,
 
-) -> Any | ApiError | None:
+) -> ApiError | SubmitInspectionRequestResponse | None:
     """submit_inspection_request
     
     Tag: inspection_request
     Operation: POST /v1/inspection-requests
     
     Responses:
-        - 204: Submit an inspection request
+        - 200: Submit an inspection request
         - 400: Error
         - 500: Internal error
     
