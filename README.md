@@ -1,9 +1,6 @@
 # Digna Python SDK
 
-Official Python SDK for [Digna](https://digna.dev), the on-premises data-quality and
-observability platform.
-
-> Status: early development.
+Official Python SDK for [Digna](https://digna.ai), the data-quality and observability platform.
 
 ## Installation
 
@@ -32,4 +29,4 @@ uv pip install -e ".[dev,docs]"
 pytest
 ```
 
-See [docs/](docs/) for full documentation (built with MkDocs).
+See [docs/](https://docs.digna.ai/) for full documentation.
