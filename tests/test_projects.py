@@ -55,28 +55,6 @@ def test_get_project(client: DignaClient) -> None:
 
 
 @respx.mock
-def test_create_project(client: DignaClient) -> None:
-    route = respx.post(f"{BASE_URL}/v1/projects").mock(
-        return_value=Response(
-            201,
-            json={"id": 2, "name": "New", "description": "d", "db_connections": []},
-        )
-    )
-
-    project = client.projects.create(name="New", description="d", db_connection_ids=[1])
-
-    assert route.called
-    assert project.id == 2
-
-
-@respx.mock
-def test_delete_project(client: DignaClient) -> None:
-    respx.delete(f"{BASE_URL}/v1/projects/1").mock(return_value=Response(204))
-
-    client.projects.delete(1)  # should not raise
-
-
-@respx.mock
 def test_authentication_error(client: DignaClient) -> None:
     respx.get(f"{BASE_URL}/v1/projects").mock(
         return_value=Response(

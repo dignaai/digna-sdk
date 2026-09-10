@@ -15,7 +15,6 @@ from .check_definition_statistic import CheckDefinitionStatistic
 from .create_attribute_request import CreateAttributeRequest
 from .create_data_set_request import CreateDataSetRequest
 from .create_data_source_request import CreateDataSourceRequest
-from .create_project_request import CreateProjectRequest
 from .data_set import DataSet
 from .data_set_data_source import DataSetDataSource
 from .data_set_project import DataSetProject
@@ -80,7 +79,6 @@ from .test_status import TestStatus
 from .update_attribute_request import UpdateAttributeRequest
 from .update_data_set_request import UpdateDataSetRequest
 from .update_data_source_request import UpdateDataSourceRequest
-from .update_project_request import UpdateProjectRequest
 
 __all__ = (
     "ApiError",
@@ -98,7 +96,6 @@ __all__ = (
     "CreateAttributeRequest",
     "CreateDataSetRequest",
     "CreateDataSourceRequest",
-    "CreateProjectRequest",
     "DataSet",
     "DataSetDataSource",
     "DatasetInspectionStatus",
@@ -151,5 +148,4 @@ __all__ = (
     "UpdateAttributeRequest",
     "UpdateDataSetRequest",
     "UpdateDataSourceRequest",
-    "UpdateProjectRequest",
 )
