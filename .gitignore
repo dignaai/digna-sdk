@@ -1,4 +1,11 @@
-.idea
-.junie
-.venv
-dist
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+site/
+.env

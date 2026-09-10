@@ -1,3 +1,0 @@
-
-class DignaClient:
-    pass

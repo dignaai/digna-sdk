@@ -1,0 +1,7 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        ".\\.venv\\Scripts\\uv.exe": true,
+        ".\\.venv\\Scripts\\python.exe": true,
+        ".\\.venv\\Scripts\\ruff.exe": true
+    }
+}
