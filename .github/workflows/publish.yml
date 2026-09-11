@@ -16,6 +16,9 @@ jobs:
         with:
           enable-cache: true
 
+      - name: Set up Python
+        run: uv python install 3.10
+
       - name: Build and Publish
         run: |
           uv build

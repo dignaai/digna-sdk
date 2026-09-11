@@ -1,22 +1,32 @@
-# digna-sdk-python
+# Digna Python SDK
 
-Official Python SDK for digna — the AI-driven Data Quality & Observability Platform.
+Official Python SDK for [Digna](https://digna.ai), the data-quality and observability platform.
 
-The SDK is currently under development and will be released soon.
+## Installation
 
-## Planned Features
+```bash
+pip install digna-sdk
+```
 
-- Data quality validations
-- AI-powered anomaly detection
-- Timeliness monitoring
-- Schema drift detection
-- Incident & observability workflows
-- Typed Python client
-- Async support
+## Quickstart
 
-Learn more about digna:
+```python
+from digna_sdk import DignaClient
 
-- https://www.digna.ai
-- https://docs.digna.ai
+client = DignaClient(base_url="http://localhost:8000", token="<your-api-token>")
 
-Stay tuned.
+projects = client.projects.list()
+for project in projects:
+    print(project.id, project.name)
+```
+
+## Development
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate       # Windows
+uv pip install -e ".[dev,docs]"
+pytest
+```
+
+See [docs/](https://docs.digna.ai/) for full documentation.
