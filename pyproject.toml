@@ -1,7 +1,7 @@
 [project]
 name = "digna-sdk"
-version = "0.1.0"
-description = "Official Python SDK for Digna, the data-quality and observability platform."
+version = "1.0.0"
+description = "Official Python SDK for digna, the data-quality and observability platform."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
