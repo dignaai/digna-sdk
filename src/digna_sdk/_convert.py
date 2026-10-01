@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import TypeVar
+from typing import NoReturn, TypeVar
 
 from pydantic import BaseModel
 
 from ._generated.models.api_error import ApiError
+from ._generated.models.api_error_code import ApiErrorCode
 from ._generated.types import Response
 from .exceptions import (
     DignaAPIError,
@@ -37,7 +38,11 @@ def _raise_for_error(response: Response[object]) -> None:
     else:
         code = None
         message = response.content.decode("utf-8", errors="replace") or "Unknown error"
+    raise_api_error(status_code, code, message)
 
+
+def raise_api_error(status_code: int, code: ApiErrorCode | None, message: str) -> NoReturn:
+    """Raise the ``DignaAPIError`` subclass matching ``status_code``."""
     if status_code == 401:
         raise DignaAuthenticationError(status_code, code, message)
     if status_code == 403:
