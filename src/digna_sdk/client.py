@@ -5,6 +5,7 @@ from __future__ import annotations
 import httpx
 
 from ._generated.client import AuthenticatedClient, Client
+from ._http import DignaHttpxClient
 from .resources import (
     AttributesResource,
     CheckDefinitionsResource,
@@ -38,12 +39,24 @@ class DignaClient:
         timeout: float | httpx.Timeout | None = 30.0,
         verify_ssl: bool | str = True,
     ) -> None:
+        token = token.strip()
+        if not token:
+            raise ValueError("token must be a non-empty digna API token")
         timeout_obj = timeout if isinstance(timeout, httpx.Timeout) or timeout is None else httpx.Timeout(timeout)
+        base_url = base_url.rstrip("/")
         self._client: AuthenticatedClient | Client = AuthenticatedClient(
-            base_url=base_url.rstrip("/"),
+            base_url=base_url,
             token=token,
             timeout=timeout_obj,
             verify_ssl=verify_ssl,
+        )
+        self._client.set_httpx_client(
+            DignaHttpxClient(
+                base_url=base_url,
+                headers={"Authorization": f"Bearer {token}"},
+                timeout=timeout_obj,
+                verify=verify_ssl,
+            )
         )
 
         self.projects = ProjectsResource(self._client)

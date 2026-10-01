@@ -11,7 +11,11 @@ class DignaError(Exception):
 
 
 class DignaConnectionError(DignaError):
-    """Raised when the SDK could not reach the Digna backend."""
+    """Raised when the SDK could not reach the Digna backend.
+
+    Covers DNS failures, refused connections, TLS errors, and timeouts. The
+    underlying ``httpx`` exception is available as ``__cause__``.
+    """
 
 
 class DignaAPIError(DignaError):

@@ -87,7 +87,7 @@ See `examples/inspection_flow.py` in the repository for the full submit → poll
 ## Handle errors
 
 ```python
-from digna_sdk import DignaAPIError, DignaNotFoundError
+from digna_sdk import DignaAPIError, DignaConnectionError, DignaNotFoundError
 
 try:
     client.projects.get(999)
@@ -95,4 +95,6 @@ except DignaNotFoundError:
     print("no such project")
 except DignaAPIError as exc:
     print(f"API error {exc.status_code}: {exc.message}")
+except DignaConnectionError as exc:
+    print(f"could not reach digna: {exc}")
 ```
