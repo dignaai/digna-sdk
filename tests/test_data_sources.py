@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import json
+from enum import StrEnum
+
+import pytest
 import respx
 from httpx import Response
 
@@ -13,6 +17,7 @@ from digna_sdk.models import (
     StableDataSetKind,
     StableDataSourceKind,
     StableDataSourceQueryMode,
+    _wire_attribute_category_missing,
 )
 
 from .conftest import BASE_URL
@@ -128,3 +133,96 @@ def test_create_attribute(client: DignaClient) -> None:
 
     assert route.called
     assert attribute.category == StableAttributeCategory.NUMERICAL
+
+
+def _attribute_json(category: str) -> dict[str, object]:
+    return {
+        "id": 9,
+        "name": "msisdn",
+        "data_type": "text",
+        "category": category,
+        "project": {"id": 1, "name": "Sales"},
+        "data_source": {"id": 5, "name": "orders_table"},
+        "check_definitions": [],
+    }
+
+
+# The stable API currently calls this category `OTHER`; it is going to be
+# renamed to `UNSPECIFIED`. The SDK must understand both.
+@pytest.mark.parametrize("wire_category", ["OTHER", "UNSPECIFIED"])
+@respx.mock
+def test_attribute_unspecified_category_is_parsed(
+    client: DignaClient, wire_category: str
+) -> None:
+    respx.get(f"{BASE_URL}/v1/attributes/9").mock(
+        return_value=Response(200, json=_attribute_json(wire_category))
+    )
+
+    attribute = client.attributes.get(9)
+
+    assert attribute.category == StableAttributeCategory.UNSPECIFIED
+
+
+@respx.mock
+def test_create_attribute_sends_unspecified_as_other(client: DignaClient) -> None:
+    route = respx.post(f"{BASE_URL}/v1/attributes").mock(
+        return_value=Response(201, json=_attribute_json("OTHER"))
+    )
+
+    client.attributes.create(
+        data_source_id=5,
+        name="msisdn",
+        data_type="text",
+        category=StableAttributeCategory.UNSPECIFIED,
+        statistic_ids=[],
+    )
+
+    assert json.loads(route.calls.last.request.content)["category"] == "OTHER"
+
+
+@respx.mock
+def test_update_attribute_sends_unspecified_as_other(client: DignaClient) -> None:
+    route = respx.put(f"{BASE_URL}/v1/attributes/9").mock(
+        return_value=Response(200, json=_attribute_json("OTHER"))
+    )
+
+    client.attributes.update(
+        9,
+        name="msisdn",
+        data_type="text",
+        category=StableAttributeCategory.UNSPECIFIED,
+        statistic_ids=[],
+    )
+
+    assert json.loads(route.calls.last.request.content)["category"] == "OTHER"
+
+
+def test_public_attribute_category_accepts_other() -> None:
+    assert StableAttributeCategory("OTHER") is StableAttributeCategory.UNSPECIFIED
+    with pytest.raises(ValueError):
+        StableAttributeCategory("BOGUS")
+
+
+class _CurrentWireCategory(StrEnum):
+    OTHER = "OTHER"
+
+
+class _RenamedWireCategory(StrEnum):
+    UNSPECIFIED = "UNSPECIFIED"
+
+
+@pytest.mark.parametrize(
+    ("wire_enum", "value", "expected"),
+    [
+        # Generated from the current spec: the renamed API's value maps back.
+        (_CurrentWireCategory, "UNSPECIFIED", _CurrentWireCategory.OTHER),
+        # Generated from the renamed spec: an older API's value maps forward.
+        (_RenamedWireCategory, "OTHER", _RenamedWireCategory.UNSPECIFIED),
+        (_CurrentWireCategory, "BOGUS", None),
+        (_RenamedWireCategory, "BOGUS", None),
+    ],
+)
+def test_wire_attribute_category_accepts_both_spellings(
+    wire_enum: type[StrEnum], value: str, expected: StrEnum | None
+) -> None:
+    assert _wire_attribute_category_missing(wire_enum, value) is expected
