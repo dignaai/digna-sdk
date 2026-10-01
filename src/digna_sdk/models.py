@@ -8,6 +8,7 @@ models, so field names and types match the OpenAPI spec exactly.
 from __future__ import annotations
 
 import datetime
+from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -18,7 +19,9 @@ from pydantic import BaseModel, ConfigDict, Field
 # not change their identity/values, so isinstance checks are unaffected).
 from ._generated.models.api_error_code import ApiErrorCode
 from ._generated.models.inspection_status import InspectionStatus
-from ._generated.models.stable_attribute_category import StableAttributeCategory
+from ._generated.models.stable_attribute_category import (
+    StableAttributeCategory as _WireAttributeCategory,
+)
 from ._generated.models.stable_data_set_kind import StableDataSetKind
 from ._generated.models.stable_data_source_kind import StableDataSourceKind
 from ._generated.models.stable_data_source_query_mode import StableDataSourceQueryMode
@@ -39,7 +42,6 @@ InspectionStatus.__doc__ = (
     "issues, `1` means warnings/uncertain results, and `2` means failures were "
     "detected."
 )
-StableAttributeCategory.__doc__ = "How an attribute's values should be treated statistically."
 StableDataSetKind.__doc__ = (
     "Whether a dataset's rows are fixed (`STATIC`), determined by a live "
     "grouping expression (`DYNAMIC`), or both (`HYBRID`)."
@@ -73,6 +75,45 @@ TestStatus.__doc__ = (
     "Not formally documented by the API; the value set mirrors `InspectionStatus` "
     "(`-1` not evaluated, `0` passed, `1` uncertain, `2` failed)."
 )
+
+
+class StableAttributeCategory(StrEnum):
+    """How an attribute's values should be treated statistically.
+
+    Unlike the other enums, this one is defined by the SDK rather than
+    re-exported, so that it can use the name shown in the digna UI and docs
+    (`UNSPECIFIED`) while the stable API still calls that category `OTHER`.
+    Both spellings are accepted when parsing values.
+    """
+
+    NUMERICAL = "NUMERICAL"
+    CATEGORICAL = "CATEGORICAL"
+    UNSPECIFIED = "UNSPECIFIED"
+    CUSTOM = "CUSTOM"
+
+    @classmethod
+    def _missing_(cls, value: object) -> StableAttributeCategory | None:
+        if value == "OTHER":
+            return cls.UNSPECIFIED
+        return None
+
+
+# The stable API is going to rename `OTHER` to `UNSPECIFIED` (accepting `OTHER`
+# as an alias). Teach the generated enum to accept whichever of the two
+# spellings the spec it was generated from lacks, so that this SDK keeps
+# working against both API versions and across a regeneration. Members are
+# looked up by name (equal to the value in generated enums) rather than via
+# `cls(...)`, which would recurse into `_missing_`.
+_UNSPECIFIED_SPELLINGS = {"OTHER": "UNSPECIFIED", "UNSPECIFIED": "OTHER"}
+
+
+def _wire_attribute_category_missing(cls: type[StrEnum], value: object) -> StrEnum | None:
+    spelling = _UNSPECIFIED_SPELLINGS.get(value) if isinstance(value, str) else None
+    return cls.__members__.get(spelling) if spelling is not None else None
+
+
+_WireAttributeCategory._missing_ = classmethod(_wire_attribute_category_missing)  # type: ignore[method-assign,assignment]
+
 
 __all__ = [
     "ApiErrorCode",

@@ -42,7 +42,7 @@ for project in client.projects.list():
 - `tests/` — `pytest` suite using `respx` to mock httpx calls (`test_projects.py`, `test_data_sources.py`, `test_inspections.py`, `test_inspection_requests_wait.py`), with fixtures in `conftest.py`.
 - `examples/` — runnable samples (`quickstart.py`, `inspection_flow.py`).
 - `docs/` + `mkdocs.yml` + `site/` — MkDocs (Material theme, `mkdocstrings`) documentation, published at docs.digna.ai.
-- `pyproject.toml` — Hatchling build, requires Python >= 3.10, runtime deps `httpx`, `attrs`, `python-dateutil`, `pydantic`; dev tooling includes `pytest`, `ruff`, `mypy`, and `openapi-python-client`.
+- `pyproject.toml` — Hatchling build, requires Python >= 3.11, runtime deps `httpx`, `attrs`, `python-dateutil`, `pydantic`; dev tooling includes `pytest`, `ruff`, `mypy`, and `openapi-python-client`.
 
 ## Mental model
 

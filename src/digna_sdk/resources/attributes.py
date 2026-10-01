@@ -12,10 +12,18 @@ from .._generated.api.attributes import (
 )
 from .._generated.client import AuthenticatedClient, Client
 from .._generated.models.create_attribute_request import CreateAttributeRequest
-from .._generated.models.stable_attribute_category import StableAttributeCategory
+from .._generated.models.stable_attribute_category import (
+    StableAttributeCategory as _WireAttributeCategory,
+)
 from .._generated.models.update_attribute_request import UpdateAttributeRequest
 from .._generated.types import UNSET
-from ..models import Attribute
+from ..models import Attribute, StableAttributeCategory
+
+
+def _to_wire_category(category: StableAttributeCategory) -> _WireAttributeCategory:
+    # Resolves to whichever spelling of UNSPECIFIED/OTHER the spec defines; see
+    # the `_missing_` patch in `digna_sdk.models`.
+    return _WireAttributeCategory(StableAttributeCategory(category).value)
 
 
 class AttributesResource:
@@ -69,7 +77,7 @@ class AttributesResource:
             data_source_id=data_source_id,
             name=name,
             data_type=data_type,
-            category=category,
+            category=_to_wire_category(category),
             statistic_ids=statistic_ids,
         )
         response = create_attribute.sync_detailed(client=self._client, body=body)
@@ -96,7 +104,7 @@ class AttributesResource:
         body = UpdateAttributeRequest(
             name=name,
             data_type=data_type,
-            category=category,
+            category=_to_wire_category(category),
             statistic_ids=statistic_ids,
         )
         response = update_attribute.sync_detailed(
